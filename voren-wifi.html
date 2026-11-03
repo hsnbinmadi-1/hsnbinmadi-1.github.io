@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>VOREN Wi-Fi</title>
+<style>
+  /* ====== VOREN Guest Wi-Fi splash page ====== */
+  :root{
+    --bg:#1c1410; --card:#2a1f19; --cream:#f3e9dc; --muted:#b9a896;
+    --accent:#c8895a; --accent-d:#a86d43; --line:#3d2f26; --err:#e0796b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:radial-gradient(120% 80% at 50% 0%,#33251d 0%,var(--bg) 60%);
+    color:var(--cream);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,"Noto Kufi Arabic",sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px 16px;min-height:100vh;
+  }
+  .wrap{width:100%;max-width:400px}
+  .lang{display:flex;justify-content:flex-end;margin-bottom:28px}
+  .lang button{
+    background:none;border:1px solid var(--line);color:var(--muted);
+    border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer
+  }
+  .brand{text-align:center;margin-bottom:28px}
+  .cup{width:54px;height:54px;margin:0 auto 14px;display:block}
+  .logo{font-size:34px;letter-spacing:.42em;font-weight:300;padding-inline-start:.42em;direction:ltr}
+  .tag{color:var(--muted);font-size:13px;letter-spacing:.18em;margin-top:6px;text-transform:uppercase;direction:ltr}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 22px}
+  h1{font-size:21px;font-weight:600;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:22px}
+  label.f{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+  .phone{
+    display:flex;direction:ltr;border:1px solid var(--line);border-radius:12px;
+    background:#1f1713;overflow:hidden;transition:border-color .2s
+  }
+  .phone:focus-within{border-color:var(--accent)}
+  .phone.bad{border-color:var(--err)}
+  .cc{padding:14px 12px;color:var(--muted);border-right:1px solid var(--line);font-size:16px;white-space:nowrap}
+  .phone input{
+    flex:1;min-width:0;background:none;border:0;outline:0;color:var(--cream);
+    font-size:18px;padding:14px 12px;letter-spacing:.05em
+  }
+  .err{color:var(--err);font-size:12.5px;min-height:18px;margin-top:6px}
+  .consent{display:flex;gap:10px;align-items:flex-start;margin:10px 0 20px;font-size:13px;color:var(--muted);line-height:1.55}
+  .consent input{margin-top:3px;width:18px;height:18px;accent-color:var(--accent);flex-shrink:0}
+  .btn{
+    width:100%;border:0;border-radius:12px;padding:15px;font-size:16px;font-weight:600;
+    background:var(--accent);color:#1c1410;cursor:pointer;transition:background .2s
+  }
+  .btn:active{background:var(--accent-d)}
+  .btn[disabled]{opacity:.55}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px;line-height:1.7}
+  .done{text-align:center;padding:10px 0}
+  .done svg{width:52px;height:52px;margin-bottom:12px}
+  .debug{
+    margin-top:18px;background:#120d0a;border:1px dashed var(--accent);border-radius:12px;
+    padding:14px;font:12px/1.6 ui-monospace,Menlo,monospace;direction:ltr;text-align:left;
+    word-break:break-all;color:#e8d6c2
+  }
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang"><button id="langBtn" type="button">English</button></div>
+
+  <div class="brand">
+    <svg class="cup" viewBox="0 0 64 64" fill="none" stroke="#c8895a" stroke-width="2.2" stroke-linecap="round">
+      <path d="M14 26h30v12a14 14 0 0 1-14 14h-2a14 14 0 0 1-14-14V26z"/>
+      <path d="M44 30h4a6 6 0 0 1 0 12h-5"/>
+      <path d="M24 12c-2 3 2 5 0 8M31 10c-2 3 2 5 0 8M38 12c-2 3 2 5 0 8" opacity=".7"/>
+    </svg>
+    <div class="logo">VOREN</div>
+    <div class="tag">Specialty Coffee</div>
+  </div>
+
+  <div class="card">
+    <form id="form" novalidate>
+      <h1 data-t="title"></h1>
+      <p class="sub" data-t="sub"></p>
+
+      <label class="f" for="mobile" data-t="label"></label>
+      <div class="phone" id="phoneBox">
+        <span class="cc">🇸🇦 +966</span>
+        <input id="mobile" type="tel" inputmode="numeric" autocomplete="tel-national"
+               placeholder="5X XXX XXXX" maxlength="12">
+      </div>
+      <div class="err" id="err"></div>
+
+      <label class="consent">
+        <input type="checkbox" id="agree">
+        <span data-t="consent"></span>
+      </label>
+
+      <button class="btn" id="go" type="submit" data-t="btn"></button>
+    </form>
+
+    <div class="done hidden" id="done">
+      <svg viewBox="0 0 52 52" fill="none" stroke="#c8895a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="26" cy="26" r="23"/><path d="M16 27l7 7 14-15"/>
+      </svg>
+      <h1 data-t="doneTitle"></h1>
+      <p class="sub" data-t="doneSub"></p>
+    </div>
+  </div>
+
+  <div class="foot" data-t="foot"></div>
+  <div class="debug hidden" id="debug"></div>
+</div>
+
+<script>
+/* ================= CONFIG — edit these ================= */
+const CONFIG = {
+  // Where to save guest numbers. Paste your Google Apps Script web-app URL here
+  // (see voren-sheet-script.gs). Leave "" to skip saving.
+  saveEndpoint: "",
+
+  // Page to open after login. Leave "" to send guests to the page they wanted.
+  successUrl: "",
+
+  // Fixed login URL, ONLY if Linksys's Help page tells you to use one.
+  // Normally leave "" — the page reads it from the URL the access point sends.
+  grantUrlOverride: ""
+};
+/* ======================================================= */
+
+const T = {
+  ar:{
+    title:"أهلاً بك في فورن ☕", sub:"أدخل رقم جوالك للاتصال بشبكة الواي فاي المجانية.",
+    label:"رقم الجوال", consent:"أوافق على أن تحتفظ فورن برقم جوالي لتقديم خدمة الإنترنت والتواصل معي بالعروض، ويمكنني طلب حذفه في أي وقت.",
+    btn:"اتصل بالإنترنت", wait:"جارٍ الاتصال…",
+    errNum:"أدخل رقم جوال سعودي صحيح يبدأ بـ 5", errAgree:"يرجى الموافقة للمتابعة",
+    errGrant:"تعذّر إكمال الاتصال. يرجى طلب المساعدة من الفريق.",
+    doneTitle:"تم الاتصال", doneSub:"استمتع بقهوتك وبالإنترنت.",
+    foot:"VOREN Specialty Coffee · Guest Wi-Fi", other:"English"
+  },
+  en:{
+    title:"Welcome to VOREN ☕", sub:"Enter your mobile number to join our free Wi-Fi.",
+    label:"Mobile number", consent:"I agree that VOREN may keep my mobile number to provide Wi-Fi and send me offers. I can ask for it to be deleted at any time.",
+    btn:"Connect", wait:"Connecting…",
+    errNum:"Enter a valid Saudi mobile number starting with 5", errAgree:"Please agree to continue",
+    errGrant:"We couldn't finish connecting you. Please ask our team for help.",
+    doneTitle:"You're connected", doneSub:"Enjoy your coffee and the Wi-Fi.",
+    foot:"VOREN Specialty Coffee · Guest Wi-Fi", other:"العربية"
+  }
+};
+
+let lang = "ar";
+const $ = id => document.getElementById(id);
+function render(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = T[lang][el.dataset.t]);
+  $("langBtn").textContent = T[lang].other;
+}
+$("langBtn").onclick = () => { lang = lang === "ar" ? "en" : "ar"; render(); };
+render();
+
+/* ---- Parameters sent by the access point ---- */
+const P = new URLSearchParams(location.search);
+const pick = (...keys) => { for (const k of keys) { const v = P.get(k); if (v) return v; } return ""; };
+
+if (P.get("debug") === "1") {
+  const box = $("debug"); box.classList.remove("hidden");
+  const rows = [...P.entries()].map(([k,v]) => `<b>${k}</b> = ${v.replace(/</g,"&lt;")}`);
+  box.innerHTML = "<b>Parameters received from the access point:</b><br>" + (rows.join("<br>") || "(none)");
+}
+
+/* ---- Phone helpers ---- */
+function normalize(raw){
+  let d = raw.replace(/\D/g, "");
+  if (d.startsWith("966")) d = d.slice(3);
+  if (d.startsWith("0")) d = d.slice(1);
+  return d;
+}
+$("mobile").addEventListener("input", e => {
+  const d = normalize(e.target.value).slice(0, 9);
+  e.target.value = d.replace(/^(\d{2})(\d{0,3})(\d{0,4}).*/, (m,a,b,c) => [a,b,c].filter(Boolean).join(" "));
+  $("phoneBox").classList.remove("bad"); $("err").textContent = "";
+});
+
+/* ---- Save number (does not block login if it fails) ---- */
+async function save(phone){
+  if (!CONFIG.saveEndpoint) return;
+  const body = JSON.stringify({
+    phone, lang, time: new Date().toISOString(),
+    client_mac: pick("client_mac","mac","clientmac"), ap_mac: pick("ap_mac","node_mac","called","apmac")
+  });
+  try {
+    await Promise.race([
+      fetch(CONFIG.saveEndpoint, { method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"}, body }),
+      new Promise(r => setTimeout(r, 3500))
+    ]);
+  } catch(_) {}
+}
+
+/* ---- Hand the guest back to the access point ---- */
+function grant(phone){
+  const cont = CONFIG.successUrl || pick("continue_url","user_continue_url","userurl","redirect_url","redirect","orig_url","url");
+  const signOn = CONFIG.grantUrlOverride ? "" : pick("login_url","loginurl");
+  const base = CONFIG.grantUrlOverride || pick("base_grant_url","grant_url","actionurl","action_url","auth_url","authurl");
+
+  if (signOn) {                       // sign-on style: POST credentials to login URL
+    const f = document.createElement("form");
+    f.method = "POST"; f.action = signOn;
+    const add = (n,v) => { const i = document.createElement("input"); i.type="hidden"; i.name=n; i.value=v; f.appendChild(i); };
+    add("username", phone); add("password", phone);
+    if (cont) { add("success_url", cont); add("continue_url", cont); }
+    document.body.appendChild(f); f.submit(); return true;
+  }
+  if (base) {                         // click-through style: open the grant URL
+    location.href = base + (cont ? (base.includes("?") ? "&" : "?") + "continue_url=" + encodeURIComponent(cont) : "");
+    return true;
+  }
+  return false;
+}
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const d = normalize($("mobile").value);
+  if (!/^5\d{8}$/.test(d)) { $("phoneBox").classList.add("bad"); $("err").textContent = T[lang].errNum; return; }
+  if (!$("agree").checked) { $("err").textContent = T[lang].errAgree; return; }
+
+  const btn = $("go"); btn.disabled = true; btn.textContent = T[lang].wait;
+  const phone = "+966" + d;
+  await save(phone);
+
+  if (!grant(phone)) {
+    if (P.get("debug") === "1") {     // testing in a normal browser
+      $("form").classList.add("hidden"); $("done").classList.remove("hidden");
+    } else {
+      btn.disabled = false; btn.textContent = T[lang].btn; $("err").textContent = T[lang].errGrant;
+    }
+  }
+});
+</script>
+</body>
+</html>
